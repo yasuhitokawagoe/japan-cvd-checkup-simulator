@@ -29,24 +29,25 @@ st.set_page_config(page_title="健診から未来をみる", page_icon="✦", la
 
 st.markdown("""
 <style>
-:root{--ink:#17324d;--muted:#66788a;--teal:#147d75;--mint:#e8f4f1;--line:#dbe5e8;--warm:#fbfaf7}
-[data-testid="stHeader"]{background:transparent}.stApp{background:linear-gradient(180deg,#f4f8f7 0,#fff 340px)}
-.block-container{max-width:680px;padding:1.2rem 1.05rem 5rem}h1,h2,h3{color:var(--ink);letter-spacing:-.025em}
-h1{font-size:clamp(2rem,8vw,3rem)!important;line-height:1.2!important}.eyebrow{color:var(--teal);font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
-.lead{font-size:1.05rem;line-height:1.9;color:#425466}.soft{color:var(--muted);font-size:.9rem}.hero{padding:2.2rem 0 1.4rem}
-.hero-mark{width:46px;height:46px;border-radius:15px;background:var(--ink);color:white;display:grid;place-items:center;font-size:21px;box-shadow:0 12px 30px #17324d2a;margin-bottom:1.7rem}
+:root{--ink:#143f35;--muted:#597067;--green:#176b5b;--green2:#23856f;--mint:#eaf4ee;--line:#d7e5dc;--warm:#f5f8f6;--red:#cf5b52;--blue:#477da8}
+[data-testid="stHeader"]{background:transparent}.stApp{background:var(--warm)}
+.block-container{max-width:760px;padding:1.2rem 1.15rem 5rem}h1,h2,h3{color:var(--ink);letter-spacing:-.025em}
+h1{font-size:clamp(2rem,8vw,3rem)!important;line-height:1.2!important}.eyebrow{color:var(--green2);font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.lead{font-size:1.05rem;line-height:1.9;color:#425c53}.soft{color:var(--muted);font-size:.9rem}.hero{padding:2rem 1.35rem 1.6rem;background:linear-gradient(125deg,#176b5b 0%,#23856f 62%,#62aa73 100%);border-radius:24px;color:white;box-shadow:0 15px 35px rgba(23,107,91,.18);margin:.5rem 0 1.2rem}.hero h1,.hero .lead,.hero .soft,.hero .eyebrow{color:white!important}.hero .soft{opacity:.9}
+.hero-mark{width:46px;height:46px;border-radius:15px;background:#ffffff24;color:white;display:grid;place-items:center;font-size:21px;margin-bottom:1.35rem}
 .trust{display:flex;gap:.6rem;flex-wrap:wrap;margin:1.2rem 0}.pill{background:white;border:1px solid var(--line);border-radius:999px;padding:.45rem .75rem;color:#526777;font-size:.82rem}
-.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:1.15rem 1.15rem;box-shadow:0 12px 40px rgba(23,50,77,.06);margin:.8rem 0}
-.risk-number{font-size:2.4rem;font-weight:750;color:var(--ink);line-height:1}.risk-label{font-size:.82rem;color:var(--muted);margin-bottom:.55rem}
+.hero .pill{background:#ffffff20;border-color:#ffffff40;color:#fff}.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.2rem;box-shadow:0 7px 22px rgba(31,74,61,.06);margin:.8rem 0}
+.risk-number{font-size:2.25rem;font-weight:800;color:var(--ink);line-height:1}.risk-label{font-size:.82rem;color:var(--muted);margin-bottom:.55rem;font-weight:650}
 .delta{display:inline-block;background:var(--mint);color:#0d6b64;border-radius:8px;padding:.28rem .5rem;font-weight:650;font-size:.82rem}
-.progress-copy{display:flex;justify-content:space-between;color:var(--muted);font-size:.76rem;margin-bottom:.4rem}.progress-track{height:4px;background:#e7edef;border-radius:5px;margin-bottom:1.6rem}.progress-fill{height:4px;background:var(--teal);border-radius:5px}
+.progress-copy{display:flex;justify-content:space-between;color:var(--muted);font-size:.76rem;margin-bottom:.4rem}.progress-track{height:5px;background:#dfe9e3;border-radius:5px;margin-bottom:1.6rem}.progress-fill{height:5px;background:var(--green2);border-radius:5px}
 .summary-row{display:flex;justify-content:space-between;gap:1rem;padding:.75rem 0;border-bottom:1px solid #edf1f2}.summary-row:last-child{border:0}.summary-row span:first-child{color:var(--muted)}
-.notice{border-left:3px solid var(--teal);padding:.2rem 0 .2rem 1rem;color:#526777;line-height:1.7;font-size:.9rem}
+.notice{border-left:3px solid var(--green2);padding:.2rem 0 .2rem 1rem;color:#526777;line-height:1.7;font-size:.9rem}
+.cvd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:1rem 0}.cvd-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:1rem;box-shadow:0 5px 16px rgba(31,74,61,.05)}.cvd-horizon{font-size:.76rem;font-weight:750;color:var(--green);margin-bottom:.8rem}.cvd-pair{display:flex;justify-content:space-between;gap:.5rem}.cvd-pair span{font-size:.74rem;color:var(--muted)}.cvd-pair strong{display:block;font-size:1.38rem;color:var(--ink);margin-top:.2rem}.reference-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:.55rem;margin:1rem 0}.reference-item{background:#eef7f2;border:1px solid #cfe3d7;border-radius:13px;padding:.75rem}.reference-item span{font-size:.73rem;color:#547066;font-weight:700}.reference-item strong{font-size:1.2rem;color:#143f35;display:block}.reference-item small{color:#6f817a}
 .stButton>button,.stDownloadButton>button{border-radius:12px!important;min-height:3.15rem;font-weight:700;border-color:#cbd9dc;width:100%}
-.stButton>button[kind="primary"]{background:var(--ink);border-color:var(--ink);box-shadow:0 8px 22px #17324d26}
+.stButton>button[kind="primary"]{background:var(--green);border-color:var(--green);box-shadow:0 8px 22px #176b5b26}
 [data-testid="stNumberInput"] input{font-size:1.25rem;font-weight:650;min-height:3rem}.stRadio label,.stCheckbox label{line-height:1.5}
 div[data-testid="stMetric"]{background:#fff;border:1px solid var(--line);padding:.8rem;border-radius:14px}
-@media(max-width:480px){.block-container{padding-top:.7rem}.panel{border-radius:17px}.hero{padding-top:1.2rem}}
+@media(max-width:560px){.block-container{padding-top:.7rem}.panel{border-radius:17px}.hero{padding:1.3rem 1.05rem}.cvd-grid{grid-template-columns:1fr}.reference-strip{grid-template-columns:repeat(2,1fr)}}
 @media print{[data-testid="stHeader"],.stButton,button{display:none!important}.block-container{max-width:100%;padding:0}.panel{box-shadow:none}}
 </style>
 """, unsafe_allow_html=True)
@@ -77,6 +78,20 @@ if "checkup_referral_id" not in st.session_state:
 if "checkup_events" not in st.session_state:
     st.session_state.checkup_events = set()
 
+# Every field starts with a clinically neutral reference value. Streamlit can
+# leave a keyed widget as None after navigation; normalise it before any cast.
+DEFAULTS = {
+    "c_age": 60, "c_sex": "male", "c_height": 170.0, "c_weight": 65.0,
+    "c_bmi": 65.0 / 1.7**2, "c_sbp": 120, "c_dbp": 80,
+    "c_bp_med": "no", "c_ldl": 100, "c_hdl": 60, "c_tg": 100,
+    "c_lipid_med": "no", "c_a1c": 5.7, "c_diabetes": "no",
+    "c_smoking": "never", "c_cigs": 0, "c_smoke_years": 0,
+    "c_quit_years": 0, "c_egfr_known": True, "c_egfr": 80.0,
+}
+for _key, _default in DEFAULTS.items():
+    if st.session_state.get(_key) is None:
+        st.session_state[_key] = _default
+
 CTX = {
     "session_id": st.session_state.checkup_session_id,
     "source": qp("source"), "campaign": qp("campaign"), "facility_id": qp("facility_id"),
@@ -103,8 +118,9 @@ def progress(step: int, total: int = 7) -> None:
 
 
 def val(key: str, default=None):
-    value = st.session_state.get(key, default)
-    return default if value is None else value
+    fallback = DEFAULTS.get(key, default)
+    value = st.session_state.get(key, fallback)
+    return fallback if value is None else value
 
 
 def risk_params(targets: dict | None = None) -> dict:
@@ -125,7 +141,7 @@ def risk_params(targets: dict | None = None) -> dict:
 def risks(targets: dict | None = None) -> dict:
     out = {}
     age = int(val("c_age", 52))
-    horizons = {"10年": min(10, 110-age), "20年": min(20, 110-age), "生涯相当": 110-age}
+    horizons = {"10年": min(10, 110-age), "20年": min(20, 110-age), "30年": min(30, 110-age)}
     for label, years in horizons.items():
         if years <= 0:
             continue
@@ -156,10 +172,7 @@ if stage == "landing":
     track("landing_view")
     campaign = qp("campaign").upper()
     alt = {"A": "この健診結果で、あなたの20年後はどう変わる？", "B": "あなたに一番効果の大きい健康対策は？"}.get(campaign)
-    st.markdown('<div class="hero"><div class="hero-mark">✦</div><p class="eyebrow">Your health, in perspective</p>', unsafe_allow_html=True)
-    st.title("健診、おつかれさまでした。")
-    st.markdown(f'<p class="lead">{html.escape(alt or "その数字を「未来」にしてみませんか？")}<br><span class="soft">今の状態と、生活や治療を変えた未来を比べられます。</span></p>', unsafe_allow_html=True)
-    st.markdown('<div class="trust"><span class="pill">約3分</span><span class="pill">登録不要</span><span class="pill">入力値は解析に保存しません</span></div></div>', unsafe_allow_html=True)
+    st.markdown(f'''<div class="hero"><div class="hero-mark">✦</div><p class="eyebrow">Your health, in perspective</p><h1>健診、おつかれさまでした。</h1><p class="lead">{html.escape(alt or "その数字を「未来」にしてみませんか？")}<br><span class="soft">今の状態と、生活や治療を変えた未来を比べられます。</span></p><div class="trust"><span class="pill">約3分</span><span class="pill">登録不要</span><span class="pill">入力値は解析に保存しません</span></div></div>''', unsafe_allow_html=True)
     if st.button("健診結果を見ながら始める　→", type="primary"):
         navigate("consent", "start_clicked")
     with st.expander("どんなサービス？"):
@@ -248,24 +261,47 @@ if stage == "confirm":
 if stage in {"result", "simulate", "handoff"}:
     current = risks()
     if stage == "result":
-        st.markdown('<p class="eyebrow">Your perspective</p>',unsafe_allow_html=True); st.title("あなたの現在の結果から推定すると")
-        st.caption("現在の状態が続いた場合に推定されるリスク")
-        cols=st.columns(3)
-        for col,(label,data) in zip(cols,current.items()):
-            # No unsupported combined CVD formula: show MI as the consistent headline.
-            with col:
-                st.markdown(f'<div class="risk-label">{label}・心筋梗塞</div><div class="risk-number">{100*data["mi"]["baseline"]:.1f}<small style="font-size:1rem">%</small></div>',unsafe_allow_html=True)
-        with st.expander("脳卒中・全死亡も見る"):
-            for label,data in current.items():
-                st.write(f'{label}：脳卒中 **{100*data["stroke"]["baseline"]:.1f}%** ／ 全死亡 **{100*data["mortality"]["baseline"]:.1f}%**')
-        # Existing engine sampled across its supported age range.
-        age=int(val("c_age")); max_year=110-age; xs=sorted(set([0,*range(5,max_year+1,5),max_year])); ys=[]
-        for y in xs:
-            ys.append(0 if y==0 else 100*engine().cumulative_incidence_with_ci(outcome="mi",years=y,**risk_params())["point"]["baseline"])
-        fig=go.Figure(go.Scatter(x=xs,y=ys,mode="lines",line=dict(color="#17324d",width=4,shape="spline"),fill="tozeroy",fillcolor="rgba(20,125,117,.09)",hovertemplate="%{x}年後　%{y:.1f}%<extra></extra>"))
-        fig.update_layout(height=320,margin=dict(l=8,r=8,t=35,b=8),title="今の状態が続いた場合｜心筋梗塞",paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(0,0,0,0)",xaxis_title="現在からの年数",yaxis_title="推定リスク（%）",font=dict(family="sans-serif",color="#526777"),showlegend=False)
+        st.markdown('<p class="eyebrow">Your cardiovascular outlook</p>',unsafe_allow_html=True)
+        st.title("健診結果からみた、これからの心血管リスク")
+        st.caption("現在の状態が続いた場合の推定です。診断や発症の断定ではありません。")
+
+        reference = {"sbp": 120.0, "ldl": 100.0, "a1c": 5.7, "bmi": 22.0, "quit": val("c_smoking") == "current"}
+        ref_items = [
+            ("収縮期血圧", f'{val("c_sbp"):.0f}', f'基準 120 / 差 {val("c_sbp")-120:+.0f}'),
+            ("LDL-C", f'{val("c_ldl"):.0f}', f'基準 100 / 差 {val("c_ldl")-100:+.0f}'),
+            ("HbA1c", f'{val("c_a1c"):.1f}%', f'基準 5.7 / 差 {val("c_a1c")-5.7:+.1f}'),
+            ("BMI", f'{val("c_bmi"):.1f}', f'基準 22 / 差 {val("c_bmi")-22:+.1f}'),
+        ]
+        st.markdown('<div class="reference-strip">'+''.join(f'<div class="reference-item"><span>{a}</span><strong>{b}</strong><small>{c}</small></div>' for a,b,c in ref_items)+'</div>',unsafe_allow_html=True)
+
+        st.markdown("### 心血管イベント")
+        st.caption("心筋梗塞と脳卒中を同じセクションで表示しています。医学的根拠なく加算した合計値は作っていません。")
+        cards=[]
+        for label,data in current.items():
+            cards.append(f'<div class="cvd-card"><div class="cvd-horizon">今後 {label}</div><div class="cvd-pair"><div><span>心筋梗塞</span><strong>{100*data["mi"]["baseline"]:.1f}%</strong></div><div><span>脳卒中</span><strong>{100*data["stroke"]["baseline"]:.1f}%</strong></div></div></div>')
+        st.markdown('<div class="cvd-grid">'+''.join(cards)+'</div>',unsafe_allow_html=True)
+
+        age=int(val("c_age", 60)); max_year=max(1,min(30,110-age)); xs=list(range(0,max_year+1)); curves={"mi":[],"stroke":[]}; bands={"mi":([],[]),"stroke":([],[])}
+        for outcome in ("mi","stroke"):
+            for y in xs:
+                if y == 0:
+                    curves[outcome].append(0.0); bands[outcome][0].append(0.0); bands[outcome][1].append(0.0)
+                else:
+                    result=engine().cumulative_incidence_with_ci(outcome=outcome,years=y,**risk_params())
+                    curves[outcome].append(100*result["point"]["baseline"]); bands[outcome][0].append(100*result["lower"]["baseline"]); bands[outcome][1].append(100*result["upper"]["baseline"])
+        fig=go.Figure()
+        colors={"mi":"#cf5b52","stroke":"#477da8"}; names={"mi":"心筋梗塞","stroke":"脳卒中"}
+        for outcome in ("mi","stroke"):
+            fig.add_trace(go.Scatter(x=xs,y=bands[outcome][1],line=dict(width=0),showlegend=False,hoverinfo="skip"))
+            fig.add_trace(go.Scatter(x=xs,y=bands[outcome][0],line=dict(width=0),fill="tonexty",fillcolor="rgba(120,140,140,.10)",showlegend=False,hoverinfo="skip"))
+            fig.add_trace(go.Scatter(x=xs,y=curves[outcome],mode="lines",name=names[outcome],line=dict(color=colors[outcome],width=3),hovertemplate=f'{names[outcome]} %{{y:.1f}}%<extra></extra>'))
+        fig.update_layout(height=390,margin=dict(l=12,r=12,t=25,b=15),paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="#ffffff",xaxis_title="現在からの年数",yaxis_title="累積リスク（%）",hovermode="x unified",legend=dict(orientation="h",y=1.1),font=dict(family="sans-serif",color="#526777"))
         st.plotly_chart(fig,width="stretch",config={"displayModeBar":False}); track("trajectory_viewed")
-        st.markdown('<div class="notice">「生涯相当」は既存モデルが対応する110歳までの推定です。将来を断定する値ではなく、比較のための目安です。</div>',unsafe_allow_html=True)
+        with st.expander("全死亡の推定も確認する"):
+            st.caption("全死亡には、心血管疾患だけでなく、がんやその他の疾患による死亡も含まれます。")
+            death_cols=st.columns(3)
+            for col,(label,data) in zip(death_cols,current.items()): col.metric(label,f'{100*data["mortality"]["baseline"]:.1f}%')
+        st.markdown('<div class="notice">薄い帯は95%推定区間です。個人の発症を決定するものではありません。表示期間は既存モデルが通常版で扱う範囲に合わせ、10年・20年・30年としています。</div>',unsafe_allow_html=True)
         st.write("");
         if st.button("未来を変えてみる　→",type="primary"): navigate("simulate")
         st.stop()
@@ -305,11 +341,21 @@ if stage in {"result", "simulate", "handoff"}:
         selected=bool(diet_keys or exercise or quit_smoke or improve_bp or improve_ldl or bp_drugs or ldl_drugs)
         planned=risks(base_targets)
         st.subheader("選択した未来との比較")
-        labels=list(current); x=np.arange(len(labels)); before=[100*current[k]["mi"]["baseline"] for k in labels]; after=[100*planned[k]["mi"]["target"] for k in labels]
-        fig=go.Figure([go.Bar(name="現在の状態",x=labels,y=before,marker_color="#b8c5cb"),go.Bar(name="選択したプラン",x=labels,y=after,marker_color="#147d75")]);fig.update_layout(barmode="group",height=330,margin=dict(l=8,r=8,t=15,b=8),paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(0,0,0,0)",yaxis_title="心筋梗塞 推定リスク（%）",legend_orientation="h")
+        labels=list(current)
+        fig=go.Figure()
+        for outcome,name,color in (("mi","心筋梗塞","#cf5b52"),("stroke","脳卒中","#477da8")):
+            before=[100*current[k][outcome]["baseline"] for k in labels]
+            after=[100*planned[k][outcome]["target"] for k in labels]
+            fig.add_trace(go.Bar(name=f"{name}・現在",x=labels,y=before,marker_color=color,opacity=.38))
+            fig.add_trace(go.Bar(name=f"{name}・選択後",x=labels,y=after,marker_color=color))
+        fig.update_layout(barmode="group",height=390,margin=dict(l=8,r=8,t=15,b=8),paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="#ffffff",yaxis_title="累積リスク（%）",legend=dict(orientation="h",y=1.16))
         st.plotly_chart(fig,width="stretch",config={"displayModeBar":False})
         if "10年" in current:
-            b,a=before[0],after[0]; st.markdown(f'<div class="panel"><div class="risk-label">10年リスク｜心筋梗塞</div><div class="risk-number">{b:.1f}% <span style="color:#91a0a8">→</span> {a:.1f}%</div><br><span class="delta">絶対差 {a-b:+.1f} ポイント</span></div>',unsafe_allow_html=True)
+            comparison=[]
+            for outcome,name in (("mi","心筋梗塞"),("stroke","脳卒中")):
+                b=100*current["10年"][outcome]["baseline"]; a=100*planned["10年"][outcome]["target"]
+                comparison.append(f'<div><div class="risk-label">10年・{name}</div><div class="risk-number">{b:.1f}% <span style="color:#91a0a8">→</span> {a:.1f}%</div><br><span class="delta">絶対差 {a-b:+.1f}ポイント</span></div>')
+            st.markdown('<div class="panel" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem">'+''.join(comparison)+'</div>',unsafe_allow_html=True)
         chosen=[DIET_EFFECTS[k].label for k in diet_keys]+([EXERCISE_EFFECTS[exercise].label] if exercise else [])+(["禁煙"] if quit_smoke else [])+([f"血圧 {base_targets['sbp']:.0f} mmHg"] if improve_bp or bp_drugs else [])+([f"LDL-C {base_targets['ldl']:.0f} mg/dL"] if improve_ldl or ldl_drugs else [])
         st.session_state.c_plan={"targets":base_targets,"labels":chosen,"risks":planned}
         if selected: track("plan_created",f'plan_{hash(str(chosen))}')
@@ -331,10 +377,11 @@ if stage in {"result", "simulate", "handoff"}:
         st.markdown('<p class="eyebrow">For consultation</p>',unsafe_allow_html=True);st.title("医師に見せるサマリー")
         st.caption("利用者が比較のために選択したシミュレーションです。処方指示ではありません。")
         st.markdown(f'<div class="panel"><h3>主要健診値</h3><div class="summary-row"><span>年齢・性別</span><strong>{val("c_age")}歳・{"男性" if val("c_sex")=="male" else "女性"}</strong></div><div class="summary-row"><span>血圧</span><strong>{val("c_sbp")} / {val("c_dbp")} mmHg</strong></div><div class="summary-row"><span>LDL-C / HbA1c</span><strong>{val("c_ldl")} mg/dL / {val("c_a1c"):.1f}%</strong></div><div class="summary-row"><span>BMI / eGFR</span><strong>{val("c_bmi"):.1f} / {val("c_egfr") or "未入力"}</strong></div></div>',unsafe_allow_html=True)
-        st.subheader("リスク比較（心筋梗塞）")
+        st.subheader("心血管イベントのリスク比較")
         for label in current:
-            b=100*current[label]["mi"]["baseline"]; a=100*planned[label]["mi"]["target"]
-            st.markdown(f'<div class="summary-row"><span>{label}</span><strong>{b:.1f}% → {a:.1f}%（{a-b:+.1f}pt）</strong></div>',unsafe_allow_html=True)
+            mi_b=100*current[label]["mi"]["baseline"]; mi_a=100*planned[label]["mi"]["target"]
+            st_b=100*current[label]["stroke"]["baseline"]; st_a=100*planned[label]["stroke"]["target"]
+            st.markdown(f'<div class="panel"><div class="cvd-horizon">{label}</div><div class="summary-row"><span>心筋梗塞</span><strong>{mi_b:.1f}% → {mi_a:.1f}%（{mi_a-mi_b:+.1f}pt）</strong></div><div class="summary-row"><span>脳卒中</span><strong>{st_b:.1f}% → {st_a:.1f}%（{st_a-st_b:+.1f}pt）</strong></div></div>',unsafe_allow_html=True)
         st.subheader("利用者が選択したプラン")
         for item in plan.get("labels",[]): st.write(f"✓ {item}")
         st.markdown('<div class="notice">推定値には不確実性があり、個人差があります。治療方針は診察・検査結果とあわせてご判断ください。</div>',unsafe_allow_html=True)
