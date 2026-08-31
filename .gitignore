@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.streamlit/
+checkup_analytics.jsonl
+.env
