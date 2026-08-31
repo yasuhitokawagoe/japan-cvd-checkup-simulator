@@ -297,6 +297,14 @@ if stage in {"result", "simulate", "handoff"}:
             fig.add_trace(go.Scatter(x=xs,y=curves[outcome],mode="lines",name=names[outcome],line=dict(color=colors[outcome],width=3),hovertemplate=f'{names[outcome]} %{{y:.1f}}%<extra></extra>'))
         fig.update_layout(height=390,margin=dict(l=12,r=12,t=25,b=15),paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="#ffffff",xaxis_title="現在からの年数",yaxis_title="累積リスク（%）",hovermode="x unified",legend=dict(orientation="h",y=1.1),font=dict(family="sans-serif",color="#526777"))
         st.plotly_chart(fig,width="stretch",config={"displayModeBar":False}); track("trajectory_viewed")
+        with st.expander("数値一覧と95%推定区間"):
+            import pandas as pd
+            detail_rows=[]
+            for label,years in (("10年",min(10,110-age)),("20年",min(20,110-age)),("30年",min(30,110-age))):
+                for outcome,outcome_name in (("mi","心筋梗塞"),("stroke","脳卒中")):
+                    result=engine().cumulative_incidence_with_ci(outcome=outcome,years=years,**risk_params())
+                    detail_rows.append({"期間":label,"心血管イベント":outcome_name,"推定リスク":f'{100*result["point"]["baseline"]:.1f}%',"95%推定区間":f'{100*result["lower"]["baseline"]:.1f}–{100*result["upper"]["baseline"]:.1f}%'})
+            st.dataframe(pd.DataFrame(detail_rows),hide_index=True,width="stretch")
         with st.expander("全死亡の推定も確認する"):
             st.caption("全死亡には、心血管疾患だけでなく、がんやその他の疾患による死亡も含まれます。")
             death_cols=st.columns(3)
@@ -321,24 +329,27 @@ if stage in {"result", "simulate", "handoff"}:
             bp_target=st.slider("収縮期血圧",90,min(180,int(val("c_sbp"))),min(130,int(val("c_sbp"))),key="c_bp_target",disabled=not improve_bp)
             improve_ldl=st.checkbox("LDLコレステロールを改善した場合",key="c_improve_ldl")
             ldl_target=st.slider("LDL-C",40,min(250,int(val("c_ldl"))),min(100,int(val("c_ldl"))),key="c_ldl_target",disabled=not improve_ldl)
-            if improve_bp or improve_ldl: track("medical_intervention_clicked",f'medical_{improve_bp}_{improve_ldl}')
+            improve_a1c=st.checkbox("HbA1cを改善した場合",key="c_improve_a1c")
+            a1c_target=st.slider("HbA1c",3.0,float(val("c_a1c")),min(7.0,float(val("c_a1c"))),step=.1,key="c_a1c_target",disabled=not improve_a1c)
+            if improve_bp or improve_ldl or improve_a1c: track("medical_intervention_clicked",f'medical_{improve_bp}_{improve_ldl}_{improve_a1c}')
             with st.expander("具体的な治療方法も比較できます"):
                 try:
-                    meds=catalog(); bp_opts=[m["key"] for m in meds["sbp"]]; ldl_opts=[m["key"] for m in meds["ldl"]]
-                    bp_drugs=st.multiselect("降圧薬",bp_opts,key="c_bp_drugs"); ldl_drugs=st.multiselect("脂質低下薬",ldl_opts,key="c_ldl_drugs")
+                    meds=catalog(); bp_opts=[m["key"] for m in meds["sbp"]]; ldl_opts=[m["key"] for m in meds["ldl"]]; a1c_opts=[m["key"] for m in meds["hba1c"]]
+                    bp_drugs=st.multiselect("降圧薬",bp_opts,key="c_bp_drugs"); ldl_drugs=st.multiselect("脂質低下薬",ldl_opts,key="c_ldl_drugs"); a1c_drugs=st.multiselect("糖尿病薬",a1c_opts,key="c_a1c_drugs")
                 except Exception:
-                    bp_drugs=[];ldl_drugs=[];st.info("薬剤カタログを読み込めませんでした。")
-                if bp_drugs or ldl_drugs: track("specific_drug_clicked",f'drugs_{hash(str((bp_drugs,ldl_drugs)))}')
+                    bp_drugs=[];ldl_drugs=[];a1c_drugs=[];st.info("薬剤カタログを読み込めませんでした。")
+                if bp_drugs or ldl_drugs or a1c_drugs: track("specific_drug_clicked",f'drugs_{hash(str((bp_drugs,ldl_drugs,a1c_drugs)))}')
         base_targets={"sbp":float(val("c_sbp")),"ldl":float(val("c_ldl")),"a1c":float(val("c_a1c")),"bmi":val("c_bmi"),"quit":quit_smoke}
         if improve_bp: base_targets["sbp"]=float(bp_target)
         if improve_ldl: base_targets["ldl"]=float(ldl_target)
-        if bp_drugs or ldl_drugs:
-            selected_bp=[m for m in meds["sbp"] if m["key"] in bp_drugs]; selected_ldl=[m for m in meds["ldl"] if m["key"] in ldl_drugs]
-            med_result=apply_meds_to_targets(float(base_targets["sbp"]),float(base_targets["ldl"]),float(base_targets["a1c"]),selected_bp,selected_ldl,[])
+        if improve_a1c: base_targets["a1c"]=float(a1c_target)
+        if bp_drugs or ldl_drugs or a1c_drugs:
+            selected_bp=[m for m in meds["sbp"] if m["key"] in bp_drugs]; selected_ldl=[m for m in meds["ldl"] if m["key"] in ldl_drugs]; selected_a1c=[m for m in meds["hba1c"] if m["key"] in a1c_drugs]
+            med_result=apply_meds_to_targets(float(base_targets["sbp"]),float(base_targets["ldl"]),float(base_targets["a1c"]),selected_bp,selected_ldl,selected_a1c)
             base_targets.update(sbp=med_result["sbp_target"],ldl=med_result["ldl_target"],a1c=med_result["a1c_target"])
         lifestyle=apply_lifestyle_effects(sbp=base_targets["sbp"],ldl=base_targets["ldl"],a1c=base_targets["a1c"],diet_keys=diet_keys,exercise_key=exercise,diabetes_context=val("c_diabetes")=="yes" or val("c_a1c")>=6.5)
         base_targets.update(sbp=lifestyle["sbp"],ldl=lifestyle["ldl"],a1c=lifestyle["a1c"])
-        selected=bool(diet_keys or exercise or quit_smoke or improve_bp or improve_ldl or bp_drugs or ldl_drugs)
+        selected=bool(diet_keys or exercise or quit_smoke or improve_bp or improve_ldl or improve_a1c or bp_drugs or ldl_drugs or a1c_drugs)
         planned=risks(base_targets)
         st.subheader("選択した未来との比較")
         labels=list(current)
@@ -356,7 +367,7 @@ if stage in {"result", "simulate", "handoff"}:
                 b=100*current["10年"][outcome]["baseline"]; a=100*planned["10年"][outcome]["target"]
                 comparison.append(f'<div><div class="risk-label">10年・{name}</div><div class="risk-number">{b:.1f}% <span style="color:#91a0a8">→</span> {a:.1f}%</div><br><span class="delta">絶対差 {a-b:+.1f}ポイント</span></div>')
             st.markdown('<div class="panel" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem">'+''.join(comparison)+'</div>',unsafe_allow_html=True)
-        chosen=[DIET_EFFECTS[k].label for k in diet_keys]+([EXERCISE_EFFECTS[exercise].label] if exercise else [])+(["禁煙"] if quit_smoke else [])+([f"血圧 {base_targets['sbp']:.0f} mmHg"] if improve_bp or bp_drugs else [])+([f"LDL-C {base_targets['ldl']:.0f} mg/dL"] if improve_ldl or ldl_drugs else [])
+        chosen=[DIET_EFFECTS[k].label for k in diet_keys]+([EXERCISE_EFFECTS[exercise].label] if exercise else [])+(["禁煙"] if quit_smoke else [])+([f"血圧 {base_targets['sbp']:.0f} mmHg"] if improve_bp or bp_drugs else [])+([f"LDL-C {base_targets['ldl']:.0f} mg/dL"] if improve_ldl or ldl_drugs else [])+([f"HbA1c {base_targets['a1c']:.1f}%"] if improve_a1c or a1c_drugs else [])
         st.session_state.c_plan={"targets":base_targets,"labels":chosen,"risks":planned}
         if selected: track("plan_created",f'plan_{hash(str(chosen))}')
         st.subheader("あなたが選んだ未来")
