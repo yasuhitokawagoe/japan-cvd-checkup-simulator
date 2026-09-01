@@ -31,7 +31,7 @@ st.markdown("""
 <style>
 :root{--ink:#143f35;--muted:#597067;--green:#176b5b;--green2:#23856f;--mint:#eaf4ee;--line:#d7e5dc;--warm:#f5f8f6;--red:#cf5b52;--blue:#477da8}
 [data-testid="stHeader"]{background:transparent}.stApp{background:var(--warm)}
-.block-container{max-width:760px;padding:1.2rem 1.15rem 5rem}h1,h2,h3{color:var(--ink);letter-spacing:-.025em}
+.block-container{max-width:1180px;padding:1.2rem 1.35rem 5rem}h1,h2,h3{color:var(--ink);letter-spacing:-.025em}
 h1{font-size:clamp(2rem,8vw,3rem)!important;line-height:1.2!important}.eyebrow{color:var(--green2);font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 .lead{font-size:1.05rem;line-height:1.9;color:#425c53}.soft{color:var(--muted);font-size:.9rem}.hero{padding:2rem 1.35rem 1.6rem;background:linear-gradient(125deg,#176b5b 0%,#23856f 62%,#62aa73 100%);border-radius:24px;color:white;box-shadow:0 15px 35px rgba(23,107,91,.18);margin:.5rem 0 1.2rem}.hero h1,.hero .lead,.hero .soft,.hero .eyebrow{color:white!important}.hero .soft{opacity:.9}
 .hero-mark{width:46px;height:46px;border-radius:15px;background:#ffffff24;color:white;display:grid;place-items:center;font-size:21px;margin-bottom:1.35rem}
@@ -43,11 +43,12 @@ h1{font-size:clamp(2rem,8vw,3rem)!important;line-height:1.2!important}.eyebrow{c
 .summary-row{display:flex;justify-content:space-between;gap:1rem;padding:.75rem 0;border-bottom:1px solid #edf1f2}.summary-row:last-child{border:0}.summary-row span:first-child{color:var(--muted)}
 .notice{border-left:3px solid var(--green2);padding:.2rem 0 .2rem 1rem;color:#526777;line-height:1.7;font-size:.9rem}
 .cvd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:1rem 0}.cvd-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:1rem;box-shadow:0 5px 16px rgba(31,74,61,.05)}.cvd-horizon{font-size:.76rem;font-weight:750;color:var(--green);margin-bottom:.8rem}.cvd-pair{display:flex;justify-content:space-between;gap:.5rem}.cvd-pair span{font-size:.74rem;color:var(--muted)}.cvd-pair strong{display:block;font-size:1.38rem;color:var(--ink);margin-top:.2rem}.reference-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:.55rem;margin:1rem 0}.reference-item{background:#eef7f2;border:1px solid #cfe3d7;border-radius:13px;padding:.75rem}.reference-item span{font-size:.73rem;color:#547066;font-weight:700}.reference-item strong{font-size:1.2rem;color:#143f35;display:block}.reference-item small{color:#6f817a}
+.dashboard-head{background:linear-gradient(125deg,#176b5b,#23856f 65%,#62aa73);padding:1.2rem 1.35rem;border-radius:20px;color:white;margin-bottom:1rem;box-shadow:0 10px 28px rgba(23,107,91,.16)}.dashboard-head h1{color:white!important;font-size:1.75rem!important;margin:.1rem 0}.dashboard-head p{margin:0;color:#eefbf5}.section-kicker{font-size:.75rem;letter-spacing:.1em;color:var(--green);font-weight:800;text-transform:uppercase}.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#74d69a;margin-right:.4rem}.result-band{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin:.7rem 0}.result-tile{background:#fff;border:1px solid var(--line);padding:.85rem;border-radius:14px}.result-tile span{display:block;color:var(--muted);font-size:.75rem}.result-tile strong{display:block;color:var(--ink);font-size:1.55rem;margin:.15rem 0}.result-tile small{color:var(--green);font-weight:700}
 .stButton>button,.stDownloadButton>button{border-radius:12px!important;min-height:3.15rem;font-weight:700;border-color:#cbd9dc;width:100%}
 .stButton>button[kind="primary"]{background:var(--green);border-color:var(--green);box-shadow:0 8px 22px #176b5b26}
 [data-testid="stNumberInput"] input{font-size:1.25rem;font-weight:650;min-height:3rem}.stRadio label,.stCheckbox label{line-height:1.5}
 div[data-testid="stMetric"]{background:#fff;border:1px solid var(--line);padding:.8rem;border-radius:14px}
-@media(max-width:560px){.block-container{padding-top:.7rem}.panel{border-radius:17px}.hero{padding:1.3rem 1.05rem}.cvd-grid{grid-template-columns:1fr}.reference-strip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.block-container{padding:.7rem .85rem 4rem}.panel{border-radius:17px}.hero{padding:1.3rem 1.05rem}.cvd-grid{grid-template-columns:1fr}.reference-strip{grid-template-columns:repeat(2,1fr)}.result-band{grid-template-columns:1fr}.dashboard-head{padding:1rem}.dashboard-head h1{font-size:1.4rem!important}}
 @media print{[data-testid="stHeader"],.stButton,button{display:none!important}.block-container{max-width:100%;padding:0}.panel{box-shadow:none}}
 </style>
 """, unsafe_allow_html=True)
@@ -87,6 +88,7 @@ DEFAULTS = {
     "c_lipid_med": "no", "c_a1c": 5.7, "c_diabetes": "no",
     "c_smoking": "never", "c_cigs": 0, "c_smoke_years": 0,
     "c_quit_years": 0, "c_egfr_known": True, "c_egfr": 80.0,
+    "c_sbp_target": 120, "c_ldl_target_live": 100, "c_a1c_target_live": 5.7,
 }
 for _key, _default in DEFAULTS.items():
     if st.session_state.get(_key) is None:
@@ -123,6 +125,24 @@ def val(key: str, default=None):
     return fallback if value is None else value
 
 
+def nudge(key: str, amount: float, low: float, high: float) -> None:
+    current = float(val(key, DEFAULTS.get(key, low)))
+    value = min(high, max(low, current + amount))
+    st.session_state[key] = int(value) if isinstance(DEFAULTS.get(key), int) else value
+
+
+def quick_slider(label: str, key: str, low: float, high: float, step: float, jump: float, unit: str) -> float:
+    """Slider with one-tap adjustments, matching the DM-care interaction."""
+    st.markdown(f"**{label}**　<span class='soft'>{unit}</span>", unsafe_allow_html=True)
+    value = st.slider(label, min_value=low, max_value=high, step=step, key=key, label_visibility="collapsed")
+    left, right = st.columns(2)
+    def button_label(delta: float) -> str:
+        return f"{delta:+g}".replace("+", "＋").replace("-", "−")
+    left.button(button_label(-jump), key=f"{key}_minus", on_click=nudge, args=(key, -jump, low, high), use_container_width=True)
+    right.button(button_label(jump), key=f"{key}_plus", on_click=nudge, args=(key, jump, low, high), use_container_width=True)
+    return value
+
+
 def risk_params(targets: dict | None = None) -> dict:
     smoking = val("c_smoking", "never")
     target = targets or {"sbp": val("c_sbp", 130), "ldl": val("c_ldl", 140), "a1c": val("c_a1c", 5.8),
@@ -154,6 +174,10 @@ def risks(targets: dict | None = None) -> dict:
 stage = st.session_state.checkup_stage
 if qp("mode") == "handout":
     stage = "handout"
+# Migrate sessions left on the former seven-screen wizard to the live dashboard.
+if stage in {"consent", "basic", "bp", "lipid", "other", "confirm", "result", "simulate"}:
+    stage = "dashboard"
+    st.session_state.checkup_stage = "dashboard"
 
 if qp("admin") == "1":
     st.markdown('<p class="eyebrow">Operations</p>', unsafe_allow_html=True)
@@ -168,13 +192,110 @@ if qp("admin") == "1":
         st.info("まだイベントはありません。")
     st.stop()
 
+if stage == "dashboard":
+    track("consent_completed", "dashboard_opened")
+    st.markdown('''<div class="dashboard-head"><div class="section-kicker" style="color:#d8f5e5"><span class="live-dot"></span>LIVE SIMULATION</div><h1>健診結果から、これからを考える</h1><p>入力を変えると、将来リスクがその場で更新されます。</p></div>''', unsafe_allow_html=True)
+    with st.expander("利用前の注意事項", expanded=False):
+        st.markdown("本サービスは医療診断ではなく、研究データに基づく推定です。医薬品を自己判断で開始・中止・変更せず、治療は医療専門職にご相談ください。")
+
+    input_col, result_col = st.columns([.88, 1.22], gap="large")
+    with input_col:
+        st.markdown('<div class="section-kicker">INPUT</div>', unsafe_allow_html=True)
+        st.subheader("健診値と目標")
+        profile_a, profile_b = st.columns(2)
+        profile_a.selectbox("性別", ["male", "female"], format_func=lambda x: "男性" if x == "male" else "女性", key="c_sex")
+        profile_b.number_input("年齢（歳）", 20, 95, step=1, key="c_age")
+
+        st.markdown("#### 現在の値")
+        quick_slider("上の血圧（収縮期）", "c_sbp", 90, 200, 1, 10, "mmHg")
+        quick_slider("LDLコレステロール", "c_ldl", 50, 250, 1, 10, "mg/dL")
+        quick_slider("HbA1c", "c_a1c", 3.0, 12.0, .1, .5, "%")
+
+        st.markdown("#### 目標値")
+        quick_slider("上の血圧（収縮期）", "c_sbp_target", 90, 160, 1, 10, "mmHg")
+        quick_slider("LDLコレステロール", "c_ldl_target_live", 50, 160, 1, 10, "mg/dL")
+        quick_slider("HbA1c", "c_a1c_target_live", 3.0, 9.0, .1, .5, "%")
+
+        with st.expander("喫煙・体格・腎機能"):
+            st.radio("喫煙", ["never", "current", "former"], format_func=lambda x:{"never":"吸わない","current":"現在吸っている","former":"以前吸っていた"}[x], key="c_smoking", horizontal=True)
+            if val("c_smoking") in {"current", "former"}:
+                sm1, sm2 = st.columns(2)
+                sm1.number_input("1日の本数", 0, 80, step=1, key="c_cigs")
+                sm2.number_input("喫煙年数", 0, 70, step=1, key="c_smoke_years")
+            if val("c_smoking") == "former":
+                st.number_input("禁煙からの年数", 0, 70, step=1, key="c_quit_years")
+            body1, body2 = st.columns(2)
+            body1.number_input("身長（cm）", 120.0, 210.0, step=.5, key="c_height")
+            body2.number_input("体重（kg）", 30.0, 180.0, step=.5, key="c_weight")
+            st.number_input("eGFR", 1.0, 150.0, step=1.0, key="c_egfr")
+            st.session_state.c_bmi = float(val("c_weight")) / (float(val("c_height")) / 100) ** 2
+            st.caption(f'BMI {val("c_bmi"):.1f}')
+
+        with st.expander("生活習慣・薬剤を追加"):
+            diet_keys=st.multiselect("食生活", list(DIET_EFFECTS), format_func=lambda k:DIET_EFFECTS[k].label, key="live_diets")
+            exercise=st.selectbox("運動", [None,*EXERCISE_EFFECTS], format_func=lambda k:"選択しない" if k is None else EXERCISE_EFFECTS[k].label, key="live_exercise")
+            try:
+                meds=catalog()
+                bp_drugs=st.multiselect("降圧薬", [m["key"] for m in meds["sbp"]], key="live_bp_drugs")
+                ldl_drugs=st.multiselect("脂質低下薬", [m["key"] for m in meds["ldl"]], key="live_ldl_drugs")
+                a1c_drugs=st.multiselect("糖尿病薬", [m["key"] for m in meds["hba1c"]], key="live_a1c_drugs")
+            except Exception:
+                bp_drugs=ldl_drugs=a1c_drugs=[]
+                st.warning("薬剤カタログを読み込めませんでした。")
+        horizon=st.selectbox("予測期間", [10,20,30], index=1, format_func=lambda y:f"{y}年", key="live_horizon")
+
+    targets={"sbp":float(val("c_sbp_target")),"ldl":float(val("c_ldl_target_live")),"a1c":float(val("c_a1c_target_live")),"bmi":float(val("c_bmi")),"quit":val("c_smoking")=="current"}
+    if bp_drugs or ldl_drugs or a1c_drugs:
+        selected_bp=[m for m in meds["sbp"] if m["key"] in bp_drugs]
+        selected_ldl=[m for m in meds["ldl"] if m["key"] in ldl_drugs]
+        selected_a1c=[m for m in meds["hba1c"] if m["key"] in a1c_drugs]
+        med_targets=apply_meds_to_targets(targets["sbp"],targets["ldl"],targets["a1c"],selected_bp,selected_ldl,selected_a1c)
+        targets.update(sbp=med_targets["sbp_target"],ldl=med_targets["ldl_target"],a1c=med_targets["a1c_target"])
+    lifestyle=apply_lifestyle_effects(sbp=targets["sbp"],ldl=targets["ldl"],a1c=targets["a1c"],diet_keys=diet_keys,exercise_key=exercise,diabetes_context=val("c_diabetes")=="yes" or val("c_a1c")>=6.5)
+    targets.update(sbp=lifestyle["sbp"],ldl=lifestyle["ldl"],a1c=lifestyle["a1c"])
+
+    live_results={}
+    for outcome in ("mi","stroke","mortality"):
+        live_results[outcome]=engine().cumulative_incidence_with_ci(outcome=outcome,years=int(horizon),**risk_params(targets))["point"]
+
+    with result_col:
+        track("result_viewed", "live_result")
+        st.markdown('<div class="section-kicker"><span class="live-dot"></span>REAL-TIME RESULT</div>', unsafe_allow_html=True)
+        st.subheader("リアルタイム予測")
+        tiles=[]
+        for outcome,name in (("mi","心筋梗塞"),("stroke","脳卒中"),("mortality","全死亡")):
+            before=100*live_results[outcome]["baseline"]; after=100*live_results[outcome]["target"]; diff=before-after
+            tiles.append(f'<div class="result-tile"><span>{horizon}年・{name}</span><strong>{after:.1f}%</strong><small>現在 {before:.1f}% ／ {diff:.1f} pt減少</small></div>')
+        st.markdown('<div class="result-band">'+''.join(tiles)+'</div>',unsafe_allow_html=True)
+        st.caption("全死亡には、心血管疾患以外のがんやその他の疾患も含みます。")
+
+        xs=list(range(0,int(horizon)+1)); fig=go.Figure()
+        for outcome,name,color in (("mi","心筋梗塞","#cf5b52"),("stroke","脳卒中","#477da8")):
+            before_curve=[];after_curve=[]
+            for year in xs:
+                if year==0: before_curve.append(0);after_curve.append(0)
+                else:
+                    rr=engine().cumulative_incidence_with_ci(outcome=outcome,years=year,**risk_params(targets))["point"]
+                    before_curve.append(100*rr["baseline"]);after_curve.append(100*rr["target"])
+            fig.add_trace(go.Scatter(x=xs,y=before_curve,name=f"{name}・現在",line=dict(color=color,width=2,dash="dot")))
+            fig.add_trace(go.Scatter(x=xs,y=after_curve,name=f"{name}・目標",line=dict(color=color,width=3)))
+        fig.update_layout(height=410,margin=dict(l=12,r=12,t=28,b=12),paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="#fff",xaxis_title="現在からの年数",yaxis_title="累積リスク（%）",hovermode="x unified",legend=dict(orientation="h",y=1.12))
+        st.plotly_chart(fig,width="stretch",config={"displayModeBar":False})
+
+        st.markdown("#### 入力と目標の確認")
+        check_cols=st.columns(3)
+        for col,label,now,target,unit in ((check_cols[0],"上の血圧",val("c_sbp"),targets["sbp"],"mmHg"),(check_cols[1],"LDL",val("c_ldl"),targets["ldl"],"mg/dL"),(check_cols[2],"HbA1c",val("c_a1c"),targets["a1c"],"%")):
+            col.metric(label,f"{now:g} {unit}",delta=f"目標 {target:.1f} {unit}",delta_color="off")
+        st.markdown('<div class="notice">入力変更は即時反映されます。表示値は研究データに基づく平均的な推定で、個人の発症を断定するものではありません。</div>',unsafe_allow_html=True)
+    st.stop()
+
 if stage == "landing":
     track("landing_view")
     campaign = qp("campaign").upper()
     alt = {"A": "この健診結果で、あなたの20年後はどう変わる？", "B": "あなたに一番効果の大きい健康対策は？"}.get(campaign)
     st.markdown(f'''<div class="hero"><div class="hero-mark">✦</div><p class="eyebrow">Your health, in perspective</p><h1>健診、おつかれさまでした。</h1><p class="lead">{html.escape(alt or "その数字を「未来」にしてみませんか？")}<br><span class="soft">今の状態と、生活や治療を変えた未来を比べられます。</span></p><div class="trust"><span class="pill">約3分</span><span class="pill">登録不要</span><span class="pill">入力値は解析に保存しません</span></div></div>''', unsafe_allow_html=True)
     if st.button("健診結果を見ながら始める　→", type="primary"):
-        navigate("consent", "start_clicked")
+        navigate("dashboard", "start_clicked")
     with st.expander("どんなサービス？"):
         st.write("健診の数字が将来にどう影響し、何を変えると推定リスクがどの程度変わるかを、グラフで比較するシミュレーターです。診断や治療の推奨を行うものではありません。")
     st.stop()
