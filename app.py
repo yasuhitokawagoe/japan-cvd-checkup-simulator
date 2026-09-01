@@ -31,7 +31,7 @@ st.markdown("""
 <style>
 :root{--ink:#143f35;--muted:#597067;--green:#176b5b;--green2:#23856f;--mint:#eaf4ee;--line:#d7e5dc;--warm:#f5f8f6;--red:#cf5b52;--blue:#477da8}
 [data-testid="stHeader"]{background:transparent}.stApp{background:var(--warm)}
-.block-container{max-width:1180px;padding:1.2rem 1.35rem 5rem}h1,h2,h3{color:var(--ink);letter-spacing:-.025em}
+.block-container{max-width:680px;padding:1rem 1rem 5rem}h1,h2,h3{color:var(--ink);letter-spacing:-.025em}
 h1{font-size:clamp(2rem,8vw,3rem)!important;line-height:1.2!important}.eyebrow{color:var(--green2);font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 .lead{font-size:1.05rem;line-height:1.9;color:#425c53}.soft{color:var(--muted);font-size:.9rem}.hero{padding:2rem 1.35rem 1.6rem;background:linear-gradient(125deg,#176b5b 0%,#23856f 62%,#62aa73 100%);border-radius:24px;color:white;box-shadow:0 15px 35px rgba(23,107,91,.18);margin:.5rem 0 1.2rem}.hero h1,.hero .lead,.hero .soft,.hero .eyebrow{color:white!important}.hero .soft{opacity:.9}
 .hero-mark{width:46px;height:46px;border-radius:15px;background:#ffffff24;color:white;display:grid;place-items:center;font-size:21px;margin-bottom:1.35rem}
@@ -43,7 +43,7 @@ h1{font-size:clamp(2rem,8vw,3rem)!important;line-height:1.2!important}.eyebrow{c
 .summary-row{display:flex;justify-content:space-between;gap:1rem;padding:.75rem 0;border-bottom:1px solid #edf1f2}.summary-row:last-child{border:0}.summary-row span:first-child{color:var(--muted)}
 .notice{border-left:3px solid var(--green2);padding:.2rem 0 .2rem 1rem;color:#526777;line-height:1.7;font-size:.9rem}
 .cvd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:1rem 0}.cvd-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:1rem;box-shadow:0 5px 16px rgba(31,74,61,.05)}.cvd-horizon{font-size:.76rem;font-weight:750;color:var(--green);margin-bottom:.8rem}.cvd-pair{display:flex;justify-content:space-between;gap:.5rem}.cvd-pair span{font-size:.74rem;color:var(--muted)}.cvd-pair strong{display:block;font-size:1.38rem;color:var(--ink);margin-top:.2rem}.reference-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:.55rem;margin:1rem 0}.reference-item{background:#eef7f2;border:1px solid #cfe3d7;border-radius:13px;padding:.75rem}.reference-item span{font-size:.73rem;color:#547066;font-weight:700}.reference-item strong{font-size:1.2rem;color:#143f35;display:block}.reference-item small{color:#6f817a}
-.dashboard-head{background:linear-gradient(125deg,#176b5b,#23856f 65%,#62aa73);padding:1.2rem 1.35rem;border-radius:20px;color:white;margin-bottom:1rem;box-shadow:0 10px 28px rgba(23,107,91,.16)}.dashboard-head h1{color:white!important;font-size:1.75rem!important;margin:.1rem 0}.dashboard-head p{margin:0;color:#eefbf5}.section-kicker{font-size:.75rem;letter-spacing:.1em;color:var(--green);font-weight:800;text-transform:uppercase}.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#74d69a;margin-right:.4rem}.result-band{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin:.7rem 0}.result-tile{background:#fff;border:1px solid var(--line);padding:.85rem;border-radius:14px}.result-tile span{display:block;color:var(--muted);font-size:.75rem}.result-tile strong{display:block;color:var(--ink);font-size:1.55rem;margin:.15rem 0}.result-tile small{color:var(--green);font-weight:700}
+.dashboard-head{background:linear-gradient(125deg,#176b5b,#23856f 65%,#62aa73);padding:1.2rem 1.35rem;border-radius:20px;color:white;margin-bottom:1rem;box-shadow:0 10px 28px rgba(23,107,91,.16)}.dashboard-head h1{color:white!important;font-size:1.75rem!important;margin:.1rem 0}.dashboard-head p{margin:0;color:#eefbf5}.section-kicker{font-size:.75rem;letter-spacing:.1em;color:var(--green);font-weight:800;text-transform:uppercase}.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#74d69a;margin-right:.4rem}.result-band{display:grid;grid-template-columns:1fr;gap:.65rem;margin:.7rem 0}.result-tile{background:#fff;border:1px solid var(--line);padding:1rem;border-radius:14px}.result-tile span{display:block;color:var(--muted);font-size:.78rem}.result-tile strong{display:block;color:var(--ink);font-size:1.65rem;margin:.15rem 0}.result-tile small{color:var(--green);font-weight:700}
 .stButton>button,.stDownloadButton>button{border-radius:12px!important;min-height:3.15rem;font-weight:700;border-color:#cbd9dc;width:100%}
 .stButton>button[kind="primary"]{background:var(--green);border-color:var(--green);box-shadow:0 8px 22px #176b5b26}
 [data-testid="stNumberInput"] input{font-size:1.25rem;font-weight:650;min-height:3rem}.stRadio label,.stCheckbox label{line-height:1.5}
@@ -170,6 +170,27 @@ def risks(targets: dict | None = None) -> dict:
     return out
 
 
+def same_live_scenario(targets: dict) -> bool:
+    """現在と選択後が同一条件か。UI上の同値比較は必ず差ゼロにする。"""
+    return (
+        abs(float(val("c_sbp")) - float(targets["sbp"])) < 1e-9
+        and abs(float(val("c_ldl")) - float(targets["ldl"])) < 1e-9
+        and abs(float(val("c_a1c")) - float(targets["a1c"])) < 1e-9
+        and abs(float(val("c_bmi")) - float(targets.get("bmi", val("c_bmi")))) < 1e-9
+        and not bool(targets.get("quit", False))
+    )
+
+
+def live_risk(outcome: str, years: int, targets: dict) -> dict:
+    """共通エンジンを使用し、変化なしケースだけ恒等性を保証する。"""
+    point = engine().cumulative_incidence_with_ci(
+        outcome=outcome, years=int(years), **risk_params(targets)
+    )["point"]
+    if same_live_scenario(targets):
+        point["target"] = point["baseline"]
+    return point
+
+
 stage = st.session_state.checkup_stage
 if qp("mode") == "handout":
     stage = "handout"
@@ -197,7 +218,9 @@ if stage == "dashboard":
     with st.expander("利用前の注意事項", expanded=False):
         st.markdown("本サービスは医療診断ではなく、研究データに基づく推定です。医薬品を自己判断で開始・中止・変更せず、治療は医療専門職にご相談ください。")
 
-    input_col, result_col = st.columns([.88, 1.22], gap="large")
+    # QRコードからスマートフォンで使う前提の1カラム構成。
+    input_col = st.container()
+    result_col = st.container()
     with input_col:
         st.markdown('<div class="section-kicker">INPUT</div>', unsafe_allow_html=True)
         st.subheader("健診値と目標")
@@ -215,6 +238,7 @@ if stage == "dashboard":
         quick_slider("LDLコレステロール", "c_ldl_target_live", 50, 160, 1, 10, "mg/dL")
         quick_slider("HbA1c", "c_a1c_target_live", 3.0, 9.0, .1, .5, "%")
 
+        quit_in_plan = False
         with st.expander("喫煙・体格・腎機能"):
             st.radio("喫煙", ["never", "current", "former"], format_func=lambda x:{"never":"吸わない","current":"現在吸っている","former":"以前吸っていた"}[x], key="c_smoking", horizontal=True)
             if val("c_smoking") in {"current", "former"}:
@@ -223,6 +247,8 @@ if stage == "dashboard":
                 sm2.number_input("喫煙年数", 0, 70, step=1, key="c_smoke_years")
             if val("c_smoking") == "former":
                 st.number_input("禁煙からの年数", 0, 70, step=1, key="c_quit_years")
+            if val("c_smoking") == "current":
+                quit_in_plan = st.toggle("🚭 禁煙した未来を比較", value=False, key="live_quit")
             body1, body2 = st.columns(2)
             body1.number_input("身長（cm）", 120.0, 210.0, value=float(val("c_height")), step=.5, key="c_height")
             body2.number_input("体重（kg）", 30.0, 180.0, value=float(val("c_weight")), step=.5, key="c_weight")
@@ -243,7 +269,7 @@ if stage == "dashboard":
                 st.warning("薬剤カタログを読み込めませんでした。")
         horizon=st.selectbox("予測期間", [10,20,30], index=1, format_func=lambda y:f"{y}年", key="live_horizon")
 
-    targets={"sbp":float(val("c_sbp_target")),"ldl":float(val("c_ldl_target_live")),"a1c":float(val("c_a1c_target_live")),"bmi":float(val("c_bmi")),"quit":val("c_smoking")=="current"}
+    targets={"sbp":float(val("c_sbp_target")),"ldl":float(val("c_ldl_target_live")),"a1c":float(val("c_a1c_target_live")),"bmi":float(val("c_bmi")),"quit":bool(quit_in_plan)}
     if bp_drugs or ldl_drugs or a1c_drugs:
         selected_bp=[m for m in meds["sbp"] if m["key"] in bp_drugs]
         selected_ldl=[m for m in meds["ldl"] if m["key"] in ldl_drugs]
@@ -255,7 +281,7 @@ if stage == "dashboard":
 
     live_results={}
     for outcome in ("mi","stroke","mortality"):
-        live_results[outcome]=engine().cumulative_incidence_with_ci(outcome=outcome,years=int(horizon),**risk_params(targets))["point"]
+        live_results[outcome]=live_risk(outcome,int(horizon),targets)
 
     with result_col:
         track("result_viewed", "live_result")
@@ -275,7 +301,7 @@ if stage == "dashboard":
             for year in xs:
                 if year==0: before_curve.append(0);after_curve.append(0)
                 else:
-                    rr=engine().cumulative_incidence_with_ci(outcome=outcome,years=year,**risk_params(targets))["point"]
+                    rr=live_risk(outcome,year,targets)
                     before_curve.append(100*rr["baseline"]);after_curve.append(100*rr["target"])
             fig.add_trace(go.Scatter(x=xs,y=before_curve,name=f"{name}・現在",line=dict(color=color,width=2,dash="dot")))
             fig.add_trace(go.Scatter(x=xs,y=after_curve,name=f"{name}・目標",line=dict(color=color,width=3)))
