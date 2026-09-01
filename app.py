@@ -90,10 +90,6 @@ DEFAULTS = {
     "c_quit_years": 0, "c_egfr_known": True, "c_egfr": 80.0,
     "c_sbp_target": 120, "c_ldl_target_live": 100, "c_a1c_target_live": 5.7,
 }
-for _key, _default in DEFAULTS.items():
-    if st.session_state.get(_key) is None:
-        st.session_state[_key] = _default
-
 CTX = {
     "session_id": st.session_state.checkup_session_id,
     "source": qp("source"), "campaign": qp("campaign"), "facility_id": qp("facility_id"),
@@ -134,7 +130,10 @@ def nudge(key: str, amount: float, low: float, high: float) -> None:
 def quick_slider(label: str, key: str, low: float, high: float, step: float, jump: float, unit: str) -> float:
     """Slider with one-tap adjustments, matching the DM-care interaction."""
     st.markdown(f"**{label}**　<span class='soft'>{unit}</span>", unsafe_allow_html=True)
-    value = st.slider(label, min_value=low, max_value=high, step=step, key=key, label_visibility="collapsed")
+    if key in st.session_state and st.session_state.get(key) is not None:
+        value = st.slider(label, min_value=low, max_value=high, step=step, key=key, label_visibility="collapsed")
+    else:
+        value = st.slider(label, min_value=low, max_value=high, value=val(key), step=step, key=key, label_visibility="collapsed")
     left, right = st.columns(2)
     def button_label(delta: float) -> str:
         return f"{delta:+g}".replace("+", "＋").replace("-", "−")
@@ -204,7 +203,7 @@ if stage == "dashboard":
         st.subheader("健診値と目標")
         profile_a, profile_b = st.columns(2)
         profile_a.selectbox("性別", ["male", "female"], format_func=lambda x: "男性" if x == "male" else "女性", key="c_sex")
-        profile_b.number_input("年齢（歳）", 20, 95, step=1, key="c_age")
+        profile_b.number_input("年齢（歳）", 20, 95, value=int(val("c_age")), step=1, key="c_age")
 
         st.markdown("#### 現在の値")
         quick_slider("上の血圧（収縮期）", "c_sbp", 90, 200, 1, 10, "mmHg")
@@ -225,9 +224,9 @@ if stage == "dashboard":
             if val("c_smoking") == "former":
                 st.number_input("禁煙からの年数", 0, 70, step=1, key="c_quit_years")
             body1, body2 = st.columns(2)
-            body1.number_input("身長（cm）", 120.0, 210.0, step=.5, key="c_height")
-            body2.number_input("体重（kg）", 30.0, 180.0, step=.5, key="c_weight")
-            st.number_input("eGFR", 1.0, 150.0, step=1.0, key="c_egfr")
+            body1.number_input("身長（cm）", 120.0, 210.0, value=float(val("c_height")), step=.5, key="c_height")
+            body2.number_input("体重（kg）", 30.0, 180.0, value=float(val("c_weight")), step=.5, key="c_weight")
+            st.number_input("eGFR", 1.0, 150.0, value=float(val("c_egfr")), step=1.0, key="c_egfr")
             st.session_state.c_bmi = float(val("c_weight")) / (float(val("c_height")) / 100) ** 2
             st.caption(f'BMI {val("c_bmi"):.1f}')
 
@@ -264,8 +263,9 @@ if stage == "dashboard":
         st.subheader("リアルタイム予測")
         tiles=[]
         for outcome,name in (("mi","心筋梗塞"),("stroke","脳卒中"),("mortality","全死亡")):
-            before=100*live_results[outcome]["baseline"]; after=100*live_results[outcome]["target"]; diff=before-after
-            tiles.append(f'<div class="result-tile"><span>{horizon}年・{name}</span><strong>{after:.1f}%</strong><small>現在 {before:.1f}% ／ {diff:.1f} pt減少</small></div>')
+            before=100*live_results[outcome]["baseline"]; after=100*live_results[outcome]["target"]; diff=after-before
+            change_text=f'{abs(diff):.1f} pt減少' if diff < 0 else (f'{diff:.1f} pt増加' if diff > 0 else '変化なし')
+            tiles.append(f'<div class="result-tile"><span>{horizon}年・{name}</span><strong>{after:.1f}%</strong><small>現在 {before:.1f}% ／ {change_text}</small></div>')
         st.markdown('<div class="result-band">'+''.join(tiles)+'</div>',unsafe_allow_html=True)
         st.caption("全死亡には、心血管疾患以外のがんやその他の疾患も含みます。")
 
